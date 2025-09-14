@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoodVibe Journal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1><i class="fas fa-heart"></i> MoodVibe Journal</h1>
+            <nav>
+                <ul>
+                    <li><a href="{% url 'index' %}" class="nav-link">Home</a></li>
+                    <li><a href="{% url 'history' %}" class="nav-link" id="historyLink">History</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 MoodVibe Journal</p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // Handle navigation links
+            $('.nav-link').click(function(e) {
+                const href = $(this).attr('href');
+                
+                // Handle history link
+                if ($(this).attr('id') === 'historyLink') {
+                    // Check if we're on the index page and have a username
+                    if ((window.location.pathname === '/' || window.location.pathname.includes('index')) && $('#username').length > 0) {
+                        const username = $('#username').val();
+                        if (username && username.trim() !== '') {
+                            e.preventDefault();
+                            window.location.href = href + '?username=' + encodeURIComponent(username);
+                            return;
+                        }
+                    }
+                    // If no username or not on index page, navigate normally
+                    window.location.href = href;
+                } else {
+                    // Handle home link - navigate normally
+                    window.location.href = href;
+                }
+            });
+        });
+    </script>
+    {% block scripts %}
+    {% endblock %}
+</body>
+</html>
