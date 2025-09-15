@@ -8,22 +8,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/heart-particles.css' %}">
 </head>
 <body>
     <header>
         <div class="container">
             <h1><i class="fas fa-heart"></i> MoodVibe Journal</h1>
-            <nav>
-                <ul>
-                    <li><a href="{% url 'index' %}" class="nav-link">Home</a></li>
-                    <li><a href="{% url 'history' %}" class="nav-link" id="historyLink">History</a></li>
-                </ul>
+            <nav class="nav-buttons">
+                <a href="{% url 'index' %}" class="nav-btn">Home</a>
+                <a href="{% url 'history' %}" class="nav-btn" id="historyLink">History</a>
             </nav>
         </div>
     </header>
 
     <main>
         <div class="container">
+            
             {% block content %}
             {% endblock %}
         </div>
@@ -37,6 +37,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <script src="{% static 'js/heart-particles.js' %}"></script>
     <script>
         $(document).ready(function() {
             // Handle navigation links

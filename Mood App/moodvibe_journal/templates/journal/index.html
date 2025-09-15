@@ -200,22 +200,29 @@
                     particleConfig.particles.number.value = 120;
                     break;
                 case 'romantic':
-                    particleConfig.particles.color.value = ["#FF69B4", "#FF1493", "#DC143C"];
+                    particleConfig.particles.color.value = ["#FF69B4", "#FF1493", "#DC143C", "#FFB6C1"];
                     particleConfig.particles.line_linked.color = "#FF69B4";
-                    particleConfig.particles.shape.type = "star";
-                    particleConfig.particles.shape.star.nb_sides = 5;
-                    particleConfig.particles.size.value = 8;
+                    particleConfig.particles.shape.type = "heart";
+                    particleConfig.particles.shape.image = {
+                        src: "data:image/svg+xml;base64," + btoa('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#FF69B4"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>'),
+                        width: 20,
+                        height: 20
+                    };
+                    particleConfig.particles.size.value = 12;
                     particleConfig.particles.size.random = true;
                     particleConfig.particles.opacity.value = 0.8;
-                    particleConfig.particles.move.speed = 2;
-                    particleConfig.particles.number.value = 60;
+                    particleConfig.particles.move.speed = 1.5;
+                    particleConfig.particles.number.value = 40;
                     break;
                 case 'angry':
-                    particleConfig.particles.color.value = "#FF0000";
+                    particleConfig.particles.color.value = ["#FF0000", "#FF4500", "#DC143C"];
                     particleConfig.particles.line_linked.color = "#FF0000";
                     particleConfig.particles.move.speed = 8;
                     particleConfig.particles.shape.type = "triangle";
-                    particleConfig.particles.size.value = 4;
+                    particleConfig.particles.size.value = 6;
+                    particleConfig.particles.size.random = true;
+                    particleConfig.particles.number.value = 100;
+                    particleConfig.particles.move.direction = "top";
                     break;
                 case 'chill':
                     particleConfig.particles.color.value = "#00CED1";
@@ -232,11 +239,15 @@
                     particleConfig.particles.shape.polygon.nb_sides = 5;
                     break;
                 case 'melancholy':
-                    particleConfig.particles.color.value = "#9370DB";
+                    particleConfig.particles.color.value = ["#9370DB", "#6A5ACD", "#483D8B"];
                     particleConfig.particles.line_linked.color = "#9370DB";
-                    particleConfig.particles.move.speed = 1.5;
+                    particleConfig.particles.move.speed = 1;
                     particleConfig.particles.move.direction = "bottom";
-                    particleConfig.particles.opacity.value = 0.6;
+                    particleConfig.particles.opacity.value = 0.7;
+                    particleConfig.particles.shape.type = "circle";
+                    particleConfig.particles.size.value = 4;
+                    particleConfig.particles.size.random = true;
+                    particleConfig.particles.number.value = 30;
                     break;
                 case 'excited':
                     particleConfig.particles.color.value = ["#FF1493", "#FF4500", "#FFD700"];
@@ -352,6 +363,17 @@
             const selectedMood = $(this).data('mood');
             // Get the display text (capitalized version) for UI
             const displayMood = $(this).find('span').text();
+            
+            // Handle heart particles for romantic mood
+            if (window.heartParticles) {
+                window.heartParticles.stop();
+            }
+            if (selectedMood.toLowerCase() === 'romantic') {
+                if (!window.heartParticles) {
+                    window.heartParticles = new HeartParticles();
+                }
+                window.heartParticles.start();
+            }
             
             // Set the hidden input with the capitalized mood name
             $('#selectedMood').val(displayMood);
@@ -488,6 +510,11 @@
             // Reset form
             $('#moodForm')[0].reset();
             $('.mood-item').removeClass('selected');
+            
+            // Stop heart particles if active
+            if (window.heartParticles) {
+                window.heartParticles.stop();
+            }
             
             // Reset background and particles
             document.body.style.background = '';
